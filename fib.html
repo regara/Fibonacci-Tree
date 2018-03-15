@@ -8,7 +8,7 @@
 <script>
 cache = [];
 
-
+//Populates cache[]
 function fibCache(index, cache){
   if(typeof caching == "undefined")caching = [];
   if(cache[index]) return cache[index];
@@ -21,6 +21,7 @@ function fibCache(index, cache){
   return cache[index];
 }
 
+//generates the rows + F(n)
 let html = (num, row) => {
   if(num == 0 ){
     $("."+row+"").append('<p style="margin-right: 2rem; text-align:center; flex:'+row+'"></p>');
@@ -30,55 +31,51 @@ let html = (num, row) => {
   }
 }
 
-function test23(array, row){
+//Gets current FibTree
+function fibonacciTree(array, row){
     row = row || 1;
+    let arrayLength = array.length;
     array = array.slice(0);
     let temp1 = array.slice(0);
     let temp2 = array.slice(0);
 
-    if(array.length == cache.length){
-      html(array.length, row)
-      console.log(array.length)
+    if(arrayLength == cache.length){
+      html(arrayLength, row);
     }
     row++;
 
-    if(array.length == 1){
-      html(array.length-1, row)
-      html(array.length-1, row)
+    if(arrayLength == 1){
+      html(arrayLength-1, row);
+      html(arrayLength-1, row);
     }
 
-    if(array.length >1){
-      html(array.length-1, row)
-      console.log(array.length-1)
-      test23(temp1.splice(0,array.length-1), row);
+    if(arrayLength >1){
+      html(arrayLength-1, row);
+      fibonacciTree(temp1.splice(0,arrayLength-1), row);
     }
-    // row++
-    if(array.length >2){
-      html(array.length-2, row);
-      console.log(array.length-2)
-      test23(temp2.splice(0,array.length-2), row);
 
+    if(arrayLength >2){
+      html(arrayLength-2, row);
+      fibonacciTree(temp2.splice(0,arrayLength-2), row);
     }
 }
 
-// fibCache(5, cache);
-// test23(cache)
 $("#fibInput").on('change', function(){
-
+  let arrLength = cache.length;
   $("#fib").empty();
 
-  if(cache.length == 0) fibCache(this.value, cache);
+  if(arrLength == 0) fibCache(this.value, cache);
   else fibCache(this.value -1, cache);
 
-  if(cache.length > 0) while(cache[0] == undefined && cache.length >1)
+  if(arrLength > 0) while(cache[0] == undefined && arrLength >1);
   cache.shift();
 
   cache = cache.splice(0, this.value);
-  for(var i = 1; i<=cache.length; i++){
+  for(var i = 1; i<=arrLength; i++){
     $("#fib").append('<div style="display:flex; margin:0 10%;" class="' + i + '"></div>');
   }
 
-  test23(cache)
+  fibonacciTree(cache);
 })
 
 </script>
